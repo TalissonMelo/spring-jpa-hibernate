@@ -1,21 +1,16 @@
 package com.talissonmelo.food.domain.model;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Table;
 
 @Entity
-@Table(name = "tab_kitchen")
 public class Kitchen {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-
-	@Column(name = "name_kitchen")
 	private String name;
 
 	public Long getId() {
