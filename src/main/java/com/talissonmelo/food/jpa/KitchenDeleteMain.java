@@ -7,7 +7,7 @@ import org.springframework.context.ApplicationContext;
 import com.talissonmelo.food.AlgaFoodApiApplication;
 import com.talissonmelo.food.domain.model.Kitchen;
 
-public class KitchenUpdateMain {
+public class KitchenDeleteMain {
 
 	public static void main(String[] args) {
 
@@ -15,12 +15,10 @@ public class KitchenUpdateMain {
 				.web(WebApplicationType.NONE).run(args);
 
 		KitchenJPA jpa = applicationContext.getBean(KitchenJPA.class);
-
 		Kitchen kitchen = new Kitchen();
 		kitchen.setId(1L);
-		kitchen.setName("Brasileira");
-
-		jpa.add(kitchen);
+		
+		jpa.deleteById(kitchen);
 
 	}
 

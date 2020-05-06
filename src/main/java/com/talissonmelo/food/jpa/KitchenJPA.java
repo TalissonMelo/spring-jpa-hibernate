@@ -28,4 +28,10 @@ public class KitchenJPA {
 	public Kitchen add(Kitchen kitchen) {
 		return manager.merge(kitchen);
 	}
+	
+	@Transactional
+	public void deleteById(Kitchen kitchen) {
+		kitchen = findById(kitchen.getId());
+		manager.remove(kitchen);
+	}
 }
