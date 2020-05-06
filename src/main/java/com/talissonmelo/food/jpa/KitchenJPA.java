@@ -20,6 +20,10 @@ public class KitchenJPA {
 		return manager.createQuery("from Kitchen", Kitchen.class).getResultList();
 	}
 	
+	public Kitchen findById(Long id) {
+		return manager.find(Kitchen.class, id);
+	}
+	
 	@Transactional
 	public Kitchen add(Kitchen kitchen) {
 		return manager.merge(kitchen);
