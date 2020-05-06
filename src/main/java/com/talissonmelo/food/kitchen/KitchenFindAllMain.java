@@ -1,4 +1,4 @@
-package com.talissonmelo.food.jpa;
+package com.talissonmelo.food.kitchen;
 
 import java.util.List;
 
@@ -8,6 +8,7 @@ import org.springframework.context.ApplicationContext;
 
 import com.talissonmelo.food.AlgaFoodApiApplication;
 import com.talissonmelo.food.domain.model.Kitchen;
+import com.talissonmelo.food.domain.model.repository.KitchenRepository;
 
 public class KitchenFindAllMain {
 
@@ -16,8 +17,8 @@ public class KitchenFindAllMain {
 		ApplicationContext applicationContext = new SpringApplicationBuilder(AlgaFoodApiApplication.class)
 				.web(WebApplicationType.NONE).run(args);
 
-		KitchenJPA jpa = applicationContext.getBean(KitchenJPA.class);
-		List<Kitchen> list = jpa.findAll();
+		KitchenRepository repository = applicationContext.getBean(KitchenRepository.class);
+		List<Kitchen> list = repository.findAll();
 
 		for (Kitchen x : list) {
 			System.out.println(x.getName());

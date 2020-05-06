@@ -1,4 +1,4 @@
-package com.talissonmelo.food.jpa;
+package com.talissonmelo.food.kitchen;
 
 import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.builder.SpringApplicationBuilder;
@@ -6,19 +6,21 @@ import org.springframework.context.ApplicationContext;
 
 import com.talissonmelo.food.AlgaFoodApiApplication;
 import com.talissonmelo.food.domain.model.Kitchen;
+import com.talissonmelo.food.domain.model.repository.KitchenRepository;
 
-public class KitchenFindByIdMain {
+public class KitchenDeleteMain {
 
 	public static void main(String[] args) {
 
 		ApplicationContext applicationContext = new SpringApplicationBuilder(AlgaFoodApiApplication.class)
 				.web(WebApplicationType.NONE).run(args);
 
-		KitchenJPA jpa = applicationContext.getBean(KitchenJPA.class);
-	
-		Kitchen kitchen = jpa.findById(1l);
+		KitchenRepository repository = applicationContext.getBean(KitchenRepository.class);
+		Kitchen kitchen = new Kitchen();
+		kitchen.setId(1L);
 		
-		System.out.println(kitchen.getName());
+		repository.deleteById(kitchen);
+
 	}
 
 }
