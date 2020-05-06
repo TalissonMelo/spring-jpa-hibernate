@@ -2,6 +2,9 @@ package com.talissonmelo.food.domain.model.repository.impl;
 
 import java.util.List;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+
 import org.springframework.stereotype.Component;
 
 import com.talissonmelo.food.domain.model.Restaurant;
@@ -10,10 +13,12 @@ import com.talissonmelo.food.domain.model.repository.RestaurantRepository;
 @Component
 public class RestaurantRepositoryImpl implements RestaurantRepository {
 
+	@PersistenceContext
+	private EntityManager manager;
+	
 	@Override
 	public List<Restaurant> findAll() {
-		// TODO Auto-generated method stub
-		return null;
+		return manager.createQuery("from Restaurant", Restaurant.class).getResultList();
 	}
 
 	@Override
