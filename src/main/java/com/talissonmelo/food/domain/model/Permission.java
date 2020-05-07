@@ -9,10 +9,10 @@ import javax.persistence.Id;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-@Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@Data
 @Entity
-public class Kitchen {
+public class Permission {
 
 	@EqualsAndHashCode.Include
 	@Id
@@ -21,5 +21,7 @@ public class Kitchen {
 	
 	@Column(nullable = true)
 	private String name;
-
+	
+	@Column(nullable = true)
+	private String description;
 }

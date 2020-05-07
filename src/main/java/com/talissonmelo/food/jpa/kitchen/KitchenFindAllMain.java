@@ -1,4 +1,6 @@
-package com.talissonmelo.food.kitchen;
+package com.talissonmelo.food.jpa.kitchen;
+
+import java.util.List;
 
 import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.builder.SpringApplicationBuilder;
@@ -8,7 +10,7 @@ import com.talissonmelo.food.AlgaFoodApiApplication;
 import com.talissonmelo.food.domain.model.Kitchen;
 import com.talissonmelo.food.domain.model.repository.KitchenRepository;
 
-public class KitchenUpdateMain {
+public class KitchenFindAllMain {
 
 	public static void main(String[] args) {
 
@@ -16,13 +18,11 @@ public class KitchenUpdateMain {
 				.web(WebApplicationType.NONE).run(args);
 
 		KitchenRepository repository = applicationContext.getBean(KitchenRepository.class);
+		List<Kitchen> list = repository.findAll();
 
-		Kitchen kitchen = new Kitchen();
-		kitchen.setId(1L);
-		kitchen.setName("Brasileira");
-
-		repository.save(kitchen);
-
+		for (Kitchen x : list) {
+			System.out.println(x.getName());
+		}
 	}
 
 }

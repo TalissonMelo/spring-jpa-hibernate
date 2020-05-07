@@ -6,6 +6,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.talissonmelo.food.domain.model.Restaurant;
 import com.talissonmelo.food.domain.model.repository.RestaurantRepository;
@@ -23,19 +24,20 @@ public class RestaurantRepositoryImpl implements RestaurantRepository {
 
 	@Override
 	public Restaurant findById(Long id) {
-		// TODO Auto-generated method stub
-		return null;
+		return manager.find(Restaurant.class, id);
 	}
 
+	@Transactional
 	@Override
 	public Restaurant save(Restaurant restaurant) {
-		// TODO Auto-generated method stub
-		return null;
+		return manager.merge(restaurant);
 	}
 
+	@Transactional
 	@Override
 	public void deleteById(Restaurant restaurant) {
-		// TODO Auto-generated method stub
+		restaurant = findById(restaurant.getId());
+		manager.remove(restaurant);
 		
 	}
 

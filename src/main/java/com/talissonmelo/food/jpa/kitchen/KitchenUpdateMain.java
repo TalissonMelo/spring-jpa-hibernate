@@ -1,4 +1,4 @@
-package com.talissonmelo.food.kitchen;
+package com.talissonmelo.food.jpa.kitchen;
 
 import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.builder.SpringApplicationBuilder;
@@ -8,7 +8,7 @@ import com.talissonmelo.food.AlgaFoodApiApplication;
 import com.talissonmelo.food.domain.model.Kitchen;
 import com.talissonmelo.food.domain.model.repository.KitchenRepository;
 
-public class KitchenAddMain {
+public class KitchenUpdateMain {
 
 	public static void main(String[] args) {
 
@@ -16,15 +16,13 @@ public class KitchenAddMain {
 				.web(WebApplicationType.NONE).run(args);
 
 		KitchenRepository repository = applicationContext.getBean(KitchenRepository.class);
-		
+
 		Kitchen kitchen = new Kitchen();
+		kitchen.setId(1L);
 		kitchen.setName("Brasileira");
-		
-		Kitchen kitchen1 = new Kitchen();
-		kitchen1.setName("Japonesa");
-		
-		repository.save(kitchen1);
+
 		repository.save(kitchen);
+
 	}
 
 }

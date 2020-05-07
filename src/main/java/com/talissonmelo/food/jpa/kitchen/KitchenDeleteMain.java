@@ -1,6 +1,4 @@
-package com.talissonmelo.food.kitchen;
-
-import java.util.List;
+package com.talissonmelo.food.jpa.kitchen;
 
 import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.builder.SpringApplicationBuilder;
@@ -10,7 +8,7 @@ import com.talissonmelo.food.AlgaFoodApiApplication;
 import com.talissonmelo.food.domain.model.Kitchen;
 import com.talissonmelo.food.domain.model.repository.KitchenRepository;
 
-public class KitchenFindAllMain {
+public class KitchenDeleteMain {
 
 	public static void main(String[] args) {
 
@@ -18,11 +16,11 @@ public class KitchenFindAllMain {
 				.web(WebApplicationType.NONE).run(args);
 
 		KitchenRepository repository = applicationContext.getBean(KitchenRepository.class);
-		List<Kitchen> list = repository.findAll();
+		Kitchen kitchen = new Kitchen();
+		kitchen.setId(1L);
+		
+		repository.deleteById(kitchen);
 
-		for (Kitchen x : list) {
-			System.out.println(x.getName());
-		}
 	}
 
 }

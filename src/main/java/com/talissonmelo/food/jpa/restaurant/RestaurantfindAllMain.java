@@ -1,4 +1,4 @@
-package com.talissonmelo.food.restaurant;
+package com.talissonmelo.food.jpa.restaurant;
 
 import java.util.List;
 
