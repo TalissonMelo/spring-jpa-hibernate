@@ -11,14 +11,14 @@ import com.talissonmelo.food.domain.model.Kitchen;
 import com.talissonmelo.food.domain.model.repository.KitchenRepository;
 
 @RestController
-@RequestMapping(value = "/kitchen")
+@RequestMapping(value = "/kitchen") // , produces = MediaType.APPLICATION_XML_VALUE)
 public class KitchenController {
-	
+
 	@Autowired
 	private KitchenRepository repository;
-	
+
 	@GetMapping
-	public List<Kitchen> findAll(){
+	public List<Kitchen> findAll() {
 		return repository.findAll();
 	}
 
