@@ -2,9 +2,10 @@ package com.talissonmelo.food.api.controller;
 
 import java.util.List;
 
+import javax.persistence.EntityNotFoundException;
+
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +23,7 @@ import com.talissonmelo.food.api.controller.api.model.kitchenRepresentationXML;
 import com.talissonmelo.food.domain.model.Kitchen;
 import com.talissonmelo.food.domain.model.repository.KitchenRepository;
 import com.talissonmelo.food.domain.model.service.KitchenService;
+import com.talissonmelo.food.domain.model.service.exception.EntityUsingException;
 
 @RestController
 @RequestMapping(value = "/kitchen") // , produces = MediaType.APPLICATION_XML_VALUE)
@@ -29,7 +31,7 @@ public class KitchenController {
 
 	@Autowired
 	private KitchenRepository repository;
-	
+
 	@Autowired
 	private KitchenService service;
 
@@ -86,17 +88,12 @@ public class KitchenController {
 	@DeleteMapping(value = "/{id}")
 	public ResponseEntity<Void> deleteById(@PathVariable Long id) {
 		try {
-			Kitchen kitchen = repository.findById(id);
+			service.deleteById(id);
+			return ResponseEntity.noContent().build();
 
-			if (kitchen != null) {
-				repository.deleteById(kitchen);
-
-				return ResponseEntity.noContent().build();
-			}
-
+		} catch (EntityNotFoundException e) {
 			return ResponseEntity.notFound().build();
-			
-		} catch (DataIntegrityViolationException e) {
+		} catch (EntityUsingException e) {
 			return ResponseEntity.status(HttpStatus.CONFLICT).build();
 		}
 	}
