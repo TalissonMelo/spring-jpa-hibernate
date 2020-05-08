@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.talissonmelo.food.api.controller.api.model.kitchenRepresentationXML;
 import com.talissonmelo.food.domain.model.Kitchen;
 import com.talissonmelo.food.domain.model.repository.KitchenRepository;
+import com.talissonmelo.food.domain.model.service.KitchenService;
 
 @RestController
 @RequestMapping(value = "/kitchen") // , produces = MediaType.APPLICATION_XML_VALUE)
@@ -28,6 +29,9 @@ public class KitchenController {
 
 	@Autowired
 	private KitchenRepository repository;
+	
+	@Autowired
+	private KitchenService service;
 
 	@GetMapping
 	public List<Kitchen> findAll() {
@@ -55,7 +59,7 @@ public class KitchenController {
 	@PostMapping
 	@ResponseStatus(value = HttpStatus.CREATED)
 	public Kitchen insert(@RequestBody Kitchen kitchen) {
-		return repository.save(kitchen);
+		return service.insert(kitchen);
 
 		/*
 		 * URI uri = ServletUriComponentsBuilder .fromCurrentRequest() .path("/{id}")
