@@ -78,7 +78,7 @@ public class KitchenController {
 			// kit.setName(kitchen.getName());
 			BeanUtils.copyProperties(kitchen, kit, "id");
 
-			kit = repository.save(kit);
+			kit = service.insert(kit);
 			return ResponseEntity.ok().body(kit);
 		}
 

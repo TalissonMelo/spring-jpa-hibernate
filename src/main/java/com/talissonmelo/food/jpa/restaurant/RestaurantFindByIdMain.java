@@ -1,25 +1,25 @@
-package com.talissonmelo.food.jpa.kitchen;
+package com.talissonmelo.food.jpa.restaurant;
 
 import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ApplicationContext;
 
 import com.talissonmelo.food.AlgaFoodApiApplication;
-import com.talissonmelo.food.domain.model.Restaurant;
-import com.talissonmelo.food.domain.model.repository.RestaurantRepository;
+import com.talissonmelo.food.domain.model.Kitchen;
+import com.talissonmelo.food.domain.model.repository.KitchenRepository;
 
-public class KitchenFindByIdMain {
+public class RestaurantFindByIdMain {
 
 	public static void main(String[] args) {
 
 		ApplicationContext applicationContext = new SpringApplicationBuilder(AlgaFoodApiApplication.class)
 				.web(WebApplicationType.NONE).run(args);
 
-		RestaurantRepository repository = applicationContext.getBean(RestaurantRepository.class);
+		KitchenRepository repository = applicationContext.getBean(KitchenRepository.class);
 	
-		Restaurant restaurant = repository.findById(1l);
+		Kitchen kitchen = repository.findById(1l);
 		
-		System.out.println(restaurant.getName());
+		System.out.println(kitchen.getName());
 	}
 
 }
