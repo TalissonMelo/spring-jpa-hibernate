@@ -17,68 +17,72 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.talissonmelo.food.domain.model.State;
-import com.talissonmelo.food.domain.model.repository.StateRepository;
-import com.talissonmelo.food.domain.model.service.StateService;
+import com.talissonmelo.food.domain.model.City;
+import com.talissonmelo.food.domain.model.repository.CityRepository;
+import com.talissonmelo.food.domain.model.service.CityService;
 import com.talissonmelo.food.domain.model.service.exception.EntityNotFoundException;
 import com.talissonmelo.food.domain.model.service.exception.EntityUsingException;
 
 @RestController
-@RequestMapping(value = "/states")
-public class StateController {
+@RequestMapping(value = "/cities")
+public class CityController {
 
 	@Autowired
-	private StateRepository repository;
+	private CityRepository repository;
 
 	@Autowired
-	private StateService service;
+	private CityService service;
 
 	@GetMapping
-	public ResponseEntity<List<State>> findAll() {
-		List<State> list = repository.findAll();
+	public ResponseEntity<List<City>> findAll() {
+		List<City> list = repository.findAll();
 		return ResponseEntity.ok().body(list);
 	}
 
 	@GetMapping(value = "/{id}")
-	public ResponseEntity<State> findById(@PathVariable Long id) {
-		State state = repository.findById(id);
+	public ResponseEntity<?> findById(@PathVariable Long id) {
+		City city = repository.findById(id);
 
-		if (state == null) {
+		if (city == null) {
 			return ResponseEntity.notFound().build();
 		}
 
-		return ResponseEntity.ok().body(state);
+		return ResponseEntity.ok().body(city);
 	}
 
 	@PostMapping
-	public ResponseEntity<State> insert(@RequestBody State state) {
-		state = service.insert(state);
-		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(state.getId()).toUri();
-		return ResponseEntity.created(uri).body(state);
-	}
-
-	@PutMapping(value = "/{id}")
-	public ResponseEntity<State> update(@PathVariable Long id, @RequestBody State state) {
-		State stateUpdate = repository.findById(id);
-
-		if (stateUpdate != null) {
-			BeanUtils.copyProperties(state, stateUpdate, "id");
-			stateUpdate = service.insert(stateUpdate);
-			return ResponseEntity.ok().body(stateUpdate);
-		}
-
-		return ResponseEntity.notFound().build();
+	public ResponseEntity<City> insert(@RequestBody City city) {
+		city = service.insert(city);
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(city.getId()).toUri();
+		return ResponseEntity.created(uri).body(city);
 	}
 
 	@DeleteMapping(value = "/{id}")
 	public ResponseEntity<?> deleteById(@PathVariable Long id) {
 		try {
-			service.delete(id);
+			service.deleteById(id);
 			return ResponseEntity.noContent().build();
 		} catch (EntityNotFoundException e) {
 			return ResponseEntity.notFound().build();
 		} catch (EntityUsingException e) {
 			return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
+		}
+	}
+
+	@PutMapping(value = "/{id}")
+	public ResponseEntity<?> update(@PathVariable Long id, @RequestBody City city) {
+		try {
+			City cityUpdate = repository.findById(id);
+
+			if (cityUpdate != null) {
+				BeanUtils.copyProperties(city, cityUpdate, "id");
+				cityUpdate = service.insert(cityUpdate);
+				return ResponseEntity.ok().body(cityUpdate);
+			}
+
+			return ResponseEntity.notFound().build();
+		} catch (EntityNotFoundException e) {
+			return ResponseEntity.badRequest().body(e.getMessage());
 		}
 	}
 

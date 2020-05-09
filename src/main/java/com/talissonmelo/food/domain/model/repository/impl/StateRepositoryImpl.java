@@ -3,8 +3,10 @@ package com.talissonmelo.food.domain.model.repository.impl;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Component;
 
 import com.talissonmelo.food.domain.model.State;
@@ -27,13 +29,19 @@ public class StateRepositoryImpl implements StateRepository {
 	}
 
 	@Override
+	@Transactional
 	public State save(State state) {
 		return manager.merge(state);
 	}
 
 	@Override
-	public void deleteById(State state) {
-		state = findById(state.getId());
+	@Transactional
+	public void deleteById(Long id) {
+		State state = findById(id);
+
+		if (state == null) {
+			throw new EmptyResultDataAccessException(1);
+		}
 		manager.remove(state);
 	}
 

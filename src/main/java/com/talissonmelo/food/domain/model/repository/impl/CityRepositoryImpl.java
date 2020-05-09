@@ -5,6 +5,7 @@ import java.util.List;
 import javax.persistence.EntityManager;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,7 +14,7 @@ import com.talissonmelo.food.domain.model.repository.CityRepository;
 
 @Component
 public class CityRepositoryImpl implements CityRepository {
-	
+
 	@Autowired
 	private EntityManager manager;
 
@@ -35,9 +36,13 @@ public class CityRepositoryImpl implements CityRepository {
 
 	@Transactional
 	@Override
-	public void deleteById(City city) {
-		city = findById(city.getId());
-		manager.remove(city);		
+	public void deleteById(Long id) {
+		City city = findById(id);
+
+		if (city == null) {
+			throw new EmptyResultDataAccessException(1);
+		}
+		manager.remove(city);
 	}
 
 }
