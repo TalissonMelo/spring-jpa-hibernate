@@ -1,19 +1,24 @@
 package com.talissonmelo.food.api.controller;
 
+import java.lang.reflect.Field;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.ReflectionUtils;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.talissonmelo.food.domain.model.Restaurant;
 import com.talissonmelo.food.domain.model.repository.RestaurantRepository;
 import com.talissonmelo.food.domain.model.service.RestaurantService;
@@ -77,4 +82,36 @@ public class RestaurantController {
 
 	}
 
+	@PatchMapping(value = "/{id}")
+	public ResponseEntity<?> updateRestaurant(@PathVariable Long id, @RequestBody Map<String, Object> obj) {
+
+		Restaurant restaurantUpdate = repository.findById(id);
+
+		if (restaurantUpdate == null) {
+			return ResponseEntity.notFound().build();
+		}
+
+		merge(obj, restaurantUpdate);
+
+		return update(id, restaurantUpdate);
+	}
+
+	private void merge(Map<String, Object> origin, Restaurant restaurantUpdate) {
+
+		ObjectMapper objectMapper = new ObjectMapper();
+		Restaurant restaurantOrigin = objectMapper.convertValue(origin, Restaurant.class);
+
+//		System.out.println(restaurantOrigin);
+
+		origin.forEach((name, value) -> {
+			Field field = ReflectionUtils.findField(Restaurant.class, name);
+			field.setAccessible(true);
+
+			Object newValue = ReflectionUtils.getField(field, restaurantOrigin);
+
+//			System.out.println(name + " = " + value + "," + newValue);
+
+			ReflectionUtils.setField(field, restaurantUpdate, newValue);
+		});
+	}
 }
