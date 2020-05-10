@@ -20,12 +20,10 @@ public class RestaurantService {
 
 	public Restaurant insert(Restaurant restaurant) {
 		Long kitchenId = restaurant.getKitchen().getId();
-		Kitchen kitchen = kitchenRepository.findById(kitchenId);
+		Kitchen kitchen = kitchenRepository.findById(kitchenId)
+				.orElseThrow(() -> new EntityNotFoundException("Cozinha não encontrada. ID: " + kitchenId));
 
-		if (kitchen == null) {
-			throw new EntityNotFoundException("Cozinha de Id: " + kitchenId + ", não encontrada");
-		}
-
+		restaurant.setKitchen(kitchen);
 		return repository.save(restaurant);
 	}
 }

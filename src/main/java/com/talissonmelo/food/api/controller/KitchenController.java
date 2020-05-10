@@ -1,6 +1,7 @@
 package com.talissonmelo.food.api.controller;
 
 import java.util.List;
+import java.util.Optional;
 
 import javax.persistence.EntityNotFoundException;
 
@@ -16,7 +17,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -48,14 +48,12 @@ public class KitchenController {
 
 	@GetMapping(value = "/{id}")
 	public ResponseEntity<Kitchen> findById(@PathVariable Long id) {
-		Kitchen kitchen = repository.findById(id);
+		Optional<Kitchen> kitchen = repository.findById(id);
 
-		if (kitchen != null) {
-//		return ResponseEntity.status(HttpStatus.OK).body(kitchen);
-			return ResponseEntity.ok().body(kitchen);
+		if (kitchen.isPresent()) {
+			return ResponseEntity.ok().body(kitchen.get());
 		}
 
-//		return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 		return ResponseEntity.notFound().build();
 	}
 
@@ -73,21 +71,19 @@ public class KitchenController {
 
 	@PutMapping(value = "/{id}")
 	public ResponseEntity<Kitchen> update(@PathVariable Long id, @RequestBody Kitchen kitchen) {
-		Kitchen kit = repository.findById(id);
+		Optional<Kitchen> kit = repository.findById(id);
 
-		if (kit != null) {
-			// kit.setName(kitchen.getName());
-			BeanUtils.copyProperties(kitchen, kit, "id");
-
-			kit = service.insert(kit);
-			return ResponseEntity.ok().body(kit);
+		if (kit.isPresent()) {
+			BeanUtils.copyProperties(kitchen, kit.get(), "id");
+			Kitchen kitchenSave = service.insert(kit.get());
+			return ResponseEntity.ok().body(kitchenSave);
 		}
 
 		return ResponseEntity.notFound().build();
 	}
 
 	@DeleteMapping(value = "/{id}")
-	public ResponseEntity<Void> deleteById(@PathVariable Long id) {
+	public ResponseEntity<?> deleteById(@PathVariable Long id) {
 		try {
 			service.deleteById(id);
 			return ResponseEntity.noContent().build();
@@ -95,12 +91,13 @@ public class KitchenController {
 		} catch (EntityNotFoundException e) {
 			return ResponseEntity.notFound().build();
 		} catch (EntityUsingException e) {
-			return ResponseEntity.status(HttpStatus.CONFLICT).build();
+			return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
 		}
 	}
-	
-	@GetMapping(value = "/names")
-	public List<Kitchen> findByName(@RequestParam(value = "name") String name){
-		return repository.findByName(name);
-	}
+
+	/*
+	 * @GetMapping(value = "/names") public List<Kitchen>
+	 * findByName(@RequestParam(value = "name") String name){ return
+	 * repository.findByName(name); }
+	 */
 }
