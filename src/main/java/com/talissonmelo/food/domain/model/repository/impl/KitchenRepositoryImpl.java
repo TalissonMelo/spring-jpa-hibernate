@@ -6,13 +6,13 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.talissonmelo.food.domain.model.Kitchen;
 import com.talissonmelo.food.domain.model.repository.KitchenRepository;
 
-@Component
+@Repository
 public class KitchenRepositoryImpl implements KitchenRepository {
 
 	@PersistenceContext
@@ -44,5 +44,12 @@ public class KitchenRepositoryImpl implements KitchenRepository {
 	public Kitchen save(Kitchen kitchen) {
 		return manager.merge(kitchen);
 
+	}
+
+	@Override
+	public List<Kitchen> findByName(String name) {
+		return manager.createQuery("from Kitchen where name like :name", Kitchen.class)
+			.setParameter("name", "%" + name + "%")
+			.getResultList();
 	}
 }

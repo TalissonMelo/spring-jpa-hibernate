@@ -7,6 +7,8 @@ import com.talissonmelo.food.domain.model.Kitchen;
 public interface KitchenRepository {
 
 	List<Kitchen> findAll();
+	
+	List<Kitchen> findByName(String name);
 
 	Kitchen findById(Long id);
 

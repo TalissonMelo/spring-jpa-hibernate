@@ -5,13 +5,13 @@ import java.util.List;
 import javax.persistence.EntityManager;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.talissonmelo.food.domain.model.Permission;
 import com.talissonmelo.food.domain.model.repository.PermissionRepository;
 
-@Component
+@Repository
 public class PermissionRepositoryImpl implements PermissionRepository {
 
 	@Autowired

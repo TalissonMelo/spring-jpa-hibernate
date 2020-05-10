@@ -5,13 +5,13 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.talissonmelo.food.domain.model.Restaurant;
 import com.talissonmelo.food.domain.model.repository.RestaurantRepository;
 
-@Component
+@Repository
 public class RestaurantRepositoryImpl implements RestaurantRepository {
 
 	@PersistenceContext
